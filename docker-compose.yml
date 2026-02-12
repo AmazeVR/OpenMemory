@@ -15,7 +15,7 @@ services:
       - OM_DB_PATH=${OM_DB_PATH:-/data/openmemory.sqlite}
       - OM_API_KEY=${OM_API_KEY:-}
       - OM_IDE_MODE=${OM_IDE_MODE:-false}
-      - OM_IDE_ALLOWED_ORIGINS=${OM_IDE_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000}
+      - OM_IDE_ALLOWED_ORIGINS=${OM_IDE_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost:3001}
 
       # Rate Limiting
       - OM_RATE_LIMIT_ENABLED=${OM_RATE_LIMIT_ENABLED:-false}
@@ -136,7 +136,9 @@ services:
       - '${DASHBOARD_PORT:-3001}:3001'
     environment:
       # This value is consumed by the browser, not the container network.
-      - NEXT_PUBLIC_API_URL=http://localhost:8080
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+      # This value is consumed by Next.js on the server (inside the container).
+      - API_URL_INTERNAL=http://openmemory:8080
       - NEXT_PUBLIC_API_KEY=${OM_API_KEY:-}
     volumes:
       - ./dashboard:/app
